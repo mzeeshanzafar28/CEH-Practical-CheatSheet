@@ -1,3 +1,4 @@
+
 ---
 
 # 🛡️ **Comprehensive CEH Practical Exam Cheatsheet**
@@ -66,7 +67,11 @@
      - `hydra -l [USER] -P [WORDLIST] [TARGET_IP] ssh`
    - **HTTP POST Form Brute Force**:
      - `hydra -l [USER] -P [WORDLIST] [URL] http-post-form "/login.php:user=^USER^&pass=^PASS^:Invalid Login"`
-   - **FTP Brute Forcing**:
+     - **Example - Advanced HTTP POST Form Brute Force**:
+     ```bash
+     hydra -l zeeshan -P /usr/share/wordlists/rockyou.txt 10.10.56.169 -V http-form-post "/login:username=^USER^&password=^PASS^:F=incorrect"
+     ```
+     - **FTP Brute Forcing**:
      - `hydra -l [USER] -P [WORDLIST] [TARGET_IP] ftp`
 
 #### 🔍 **strace (System Call Tracer)**
@@ -174,16 +179,16 @@
    - 📥 [PrivescCheck](https://github.com/itm4n/PrivescCheck) - *Privilege Escalation Enumeration Tool*
    - 📥 [WES-NG](https://github.com/bitsadmin/wesng) - *Windows Exploit Suggester*
 
-2. **Check Files for Credentials**:
+2. **Check
+
+ Files for Credentials**:
    - `C:\Unattend.xml`
    - `C:\Windows\Panther\Unattend.xml`
    - `C:\Windows\system32\sysprep.inf`
    - `C:\Windows\system32\sysprep\sysprep.xml`
 
 3. **Check PowerShell History**:
-   - `type %userprofile%\
-
-AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt`
+   - `type %userprofile%\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt`
 
 4. **Check Saved Credentials**:
    - `cmdkey /list`
@@ -247,7 +252,73 @@ AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt`
 
 ---
 
-### 7. **⚙️ Miscellaneous Tools**
+### 7. **⚙️ Burp Suite**
+
+Burp Suite is a powerful tool for web application security testing. Below are its main modules and common use cases:
+
+#### **🌐 Proxy** 
+   - **Usage**: Intercept traffic between your browser and the target server.
+   - **Common Scenarios**:
+     - Intercept and modify HTTP requests before sending them to the server.
+     - Inspect responses for hidden fields or information leaks.
+
+#### **📧 Repeater** 
+   - **Usage**: Manually modify and resend individual requests.
+   - **Common Scenarios**:
+     - Test different payloads for SQLi, XSS, etc.
+     - Alter POST data to observe changes in server behavior.
+
+#### **🎯 Intruder** 
+   - **Usage**: Automate customized attacks like fuzzing and brute-forcing.
+   - **Common Attacks**:
+     - **Sniper**: Single payload, single injection point.
+     - **Battering Ram**: Same payload sent to multiple injection points.
+     - **Pitchfork**: Multiple payloads sent simultaneously to multiple positions.
+     - **Cluster Bomb**: Every combination of payloads sent to multiple injection points.
+
+#### **🔍 Scanner**
+   - **Usage**: Automated vulnerability scanning.
+   - **Common Scenarios**:
+     - Detect common web application vulnerabilities like XSS, SQLi, etc.
+
+#### **📜 Decoder**
+   - **Usage**: Encode and decode data in various formats.
+   - **Common Formats**:
+     - Base64, URL encoding, HTML encoding, etc.
+
+---
+
+### 8. **📊 Wireshark**
+
+Wireshark is a widely-used network protocol analyzer that helps in deep packet inspection and network troubleshooting. Below are some popular filters and tips for packet analysis:
+
+#### **📝 Popular Filters**
+   - **Filter by IP Address**:
+     - `ip.addr == 192.168.1.1`
+   - **Filter by MAC Address**:
+     - `eth.addr == aa:bb:cc:dd:ee:ff`
+   - **HTTP Traffic**:
+     - `http`
+   - **Filter by Port**:
+     - `tcp.port == 80` (HTTP), `udp.port == 53` (DNS)
+   - **DNS Queries**:
+     - `dns`
+   - **Follow a TCP Stream**:
+     - Right-click on a packet and select *Follow TCP Stream*.
+
+#### **🔍 Packet Analysis Tips**
+   - **Check TCP Flags**:
+     - Look for SYN, ACK, and RST flags to analyze connections.
+   - **Identify Retransmissions**:
+     - Look for duplicate or out-of-order packets.
+   - **Inspect Latency**:
+     - Filter `icmp` packets to analyze round-trip time for ping requests.
+   - **Find Passwords**:
+     - Search in **HTTP** or **FTP** protocols if encryption is not used.
+
+---
+
+### 9. **⚙️ Miscellaneous Tools**
 
 #### ⚙️ **Msfvenom (Payload Generation)**
    - **Windows Reverse Shell**:
@@ -258,6 +329,6 @@ AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt`
 
 ---
 
-> **Enjoy your journey of mastering ethical hacking!** 😎
-
+> **Enjoy your journey of mastering hacking!** 😎
+> **Follow for more on Linkedin:https://www.linkedin.com/in/m-zeeshan-zafar-9205a1248/**
 ---
