@@ -592,7 +592,9 @@ Weevely is a stealthy PHP web shell used for remote command execution and backdo
     ```bash
     weevely http://target.com/shell.php password
     ```
-    ### 18.  **Snow (Steganography Tool)**
+---
+
+### 18.  **Snow (Steganography Tool)**
 
 **Snow** is a whitespace steganography tool that hides messages in ASCII text files by appending spaces and tabs at the end of lines.
 
