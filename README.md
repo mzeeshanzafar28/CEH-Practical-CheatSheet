@@ -14,6 +14,7 @@
      - **-p**: Specify ports (e.g., `-p 80,443` or `-p-` for all ports).
      - **-O**: OS detection.
      - **-sT**: Full TCP connect scan.
+     - **-sP**: No Port Ping scan.
      - **-sS**: Stealth SYN scan.
      - **-sN**: Null scan (no flags set, useful for bypassing certain firewalls).
      - **-sn**: Skips port scanning, performing only host discovery.
