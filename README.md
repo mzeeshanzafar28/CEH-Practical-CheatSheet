@@ -1,6 +1,6 @@
 ---
 
-# 🛡️ **Comprehensive CEH Practical Exam Cheatsheet**
+# 🛡️ **Comprehensive CEH Practical Exam Cheatsheet by Zeeshan**
 
 ---
 
@@ -560,6 +560,176 @@ Here are some **repeated questions** often seen in the CEH Practical exam, compi
      - **Wireshark**: [Wireshark TryHackMe](https://tryhackme.com/room/wireshark)
      - **John the Ripper**: [John the Ripper TryHackMe](https://tryhackme.com/room/johntheripper0)
      - **Metasploit**: [Metasploit TryHackMe](https://tryhackme.com/room/rpmetasploit)
+
+---
+
+
+
+---
+
+## 🔥 **8. Some Important Past Paper Questions**
+
+Here are some **repeated questions** often seen in the CEH Practical exam:
+
+1. **Find the IP of the Windows machine.**
+   - Use `nmap -O [TARGET_NETWORK]` or `netdiscover -i eth0`
+2. **What is the version of the Linux Kernel?**
+   - Use `nmap -O [TARGET_IP]`
+3. **How many Windows machines are there?**
+   - Use `netdiscover -i eth0`
+4. **What is the password for the user of the FTP server?**
+   - Use `hydra` or `ftp` login attempts.
+5. **What is the password hidden in the .jpeg file?**
+   - Use steganography tools like **Steghide**, **OpenStego**, or **Snow**.
+6. **Find the IP address of the machine running RDP?**
+   - Use `nmap -p 3389 [TARGET_NETWORK]`
+7. **Find the HTTP method that poses a high risk to the application example.com?**
+   - Use `nmap --script http-methods -p 80 example.com`
+8. **Find the phone number of the employee?**
+   - Perform OSINT or check metadata in files using `exiftool`.
+9. **Find the filename which is tampered by comparing the hashes given in the /hashes folder?**
+   - Use `md5sum` or `sha1sum` to compare hashes.
+10. **Decrypt the volume file using VeraCrypt?**
+    - Use **VeraCrypt** to mount and decrypt the volume.
+11. **Connect to the server remotely using the credentials given via RDP?**
+    - Use `rdesktop` or `mstsc` command.
+12. **Decode the file which is encoded in DES (ECB) format?**
+    - Use cryptography tools like **OpenSSL**.
+13. **Find the password of the WordPress user “Demo”?**
+    - Use **WPScan** to enumerate users and brute-force passwords.
+14. **Find the attacker's IP address who has launched the DoS attack?**
+    - Analyze the provided PCAP file using **Wireshark**.
+15. **Find the number of machines that were used to initiate the DDoS attack?**
+    - Analyze network traffic in the PCAP file.
+16. **Find the username/password from the pcap file, which is in plain text?**
+    - Use **Wireshark** to extract credentials from unencrypted protocols.
+17. **Extract the information from the SD card of the Android user?**
+    - Use **ADB** or Android forensics tools.
+18. **Find the OS name of the machine which is running MySQL database?**
+    - Use `nmap -sV -p 3306 [TARGET_IP]`
+19. **Find the Domain Controller’s name.**
+    - Use `nmap --script smb-os-discovery.nse -p 445 [TARGET_IP]`
+20. **Discover the IP of “wampserver”.**
+    - Use `nmap -sV -p 80 [TARGET_NETWORK]`
+21. **Crack “UserX’s” SMB credentials and decrypt “File.txt.”**
+    - Use **Hydra** for SMB brute-force; decrypt file with obtained credentials.
+22. **Determine the End of Life severity score on a specific host.**
+    - Use vulnerability scanners like **Nessus**.
+23. **Extract the data from “HiddenImage.jpg.”**
+    - Use steganography tools.
+24. **Exploit weak FTP credentials.**
+    - Use **Hydra** or manual FTP login attempts.
+25. **Gain root access using [exploit].**
+    - Identify and use a local privilege escalation exploit.
+26. **Find the entry point (address) in a given binary.**
+    - Use reverse engineering tools like **Ghidra** or **OllyDbg**.
+27. **Identify the attacker’s IP in “ddos.pcap” targeting a specific IP address.**
+    - Analyze PCAP with **Wireshark**.
+28. **Perform an SQL injection to extract data.**
+    - Use **SqlMap** or manual SQL injection techniques.
+29. **Identify IoT Publish Message length from traffic capture.**
+    - Analyze MQTT traffic in **Wireshark**.
+30. **Crack wireless encryption in “WirelessCapture.cap”.**
+    - Use **Aircrack-ng** suite.
+
+---
+
+## 🛠️ **9. Tools You Must Have Hands-On**
+
+To excel in the CEH Practical Exam, it's crucial to have hands-on experience with the following tools:
+
+### **Network Scanning & Enumeration**
+
+- **Nmap**
+- **Netdiscover**
+- **Masscan**
+
+### **Password Cracking**
+
+- **John the Ripper**
+- **Hashcat**
+- **Hydra**
+- **Medusa**
+
+### **Vulnerability Scanning**
+
+- **Nessus**
+- **OpenVAS**
+- **Acunetix**
+- **Nikto**
+- **OWASP ZAP**
+
+### **Exploitation Frameworks**
+
+- **Metasploit Framework**
+- **BeEF (Browser Exploitation Framework)**
+
+### **Web Application Testing**
+
+- **Burp Suite**
+- **SqlMap**
+- **WPScan**
+- **Dirb**
+- **Gobuster**
+- **ffuf**
+
+### **Steganography & Cryptography**
+
+- **Steghide**
+- **OpenStego**
+- **QuickStego**
+- **Snow**
+- **VeraCrypt**
+- **Cryptool**
+- **Hash Calculator**
+
+### **Reverse Engineering & Malware Analysis**
+
+- **Ghidra**
+- **Jadx**
+- **DnSpy**
+- **DIE (Detect It Easy)**
+- **OllyDbg**
+
+### **Packet Analysis**
+
+- **Wireshark**
+- **Tcpdump**
+
+### **Wireless Attacks**
+
+- **Aircrack-ng**
+- **Reaver**
+
+### **Android Hacking**
+
+- **ADB (Android Debug Bridge)**
+- **PhoneSploit**
+- **Knox Player Emulator**
+- **Frida**
+- **Objection**
+
+### **Forensics**
+
+- **Autopsy**
+- **FTK Imager**
+- **Cellebrite**
+
+### **Miscellaneous**
+
+- **BrowserLink**
+- **IBM QRadar**
+- **Wazuh**
+- **Hashcalc**
+- **MD5Calculator**
+
+---
+
+**Note**: Practice using these tools in various scenarios to be prepared for any practical task during the exam.
+
+---
+
+> **Enjoy your journey of mastering ethical hacking!** 😎
 
 ---
 
