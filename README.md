@@ -16,6 +16,7 @@
      - **-sT**: Full TCP connect scan.
      - **-sS**: Stealth SYN scan.
      - **-sN**: Null scan (no flags set, useful for bypassing certain firewalls).
+     - **-sn**: Skips port scanning, performing only host discovery.
      - **-Pn**: Disable host discovery.
      - **-vv**: Increase verbosity for detailed output.
      - **-oN**: Save output to a file in normal format.
@@ -514,6 +515,46 @@ Lateral movement techniques allow attackers to spread within the network once in
 #### **📡 SMB Relay Attack**:
    - **LLMNR/NBNS Poisoning and Relay**:
      - Use **Responder** or **Impacket** tools to execute SMB Relay attacks.
+
+---
+
+
+### **🔥 Some Important Past Paper Questions**
+
+Here are some **repeated questions** often seen in the CEH Practical exam, compiled from multiple sources:
+
+1. **Nmap Host Discovery**:
+   - Command: `nmap -sn [TARGET_NETWORK]`
+   - Host discovery without port scanning is a common task.
+   
+2. **Listing All Devices on a Network**:
+   - Command: `netdiscover -i eth0`
+
+3. **Hash Cracking**:
+   - Use **John the Ripper** for cracking passwords: `john --wordlist=[WORDLIST] [HASH_FILE]`
+   
+4. **Android Hacking**:
+   - **ADB** tool for Android hacking: `adb connect [IP]`
+   - Related tools: **PhoneSploit** for exploiting Android platforms.
+
+5. **Password Cracking**:
+   - Tools like `john` and `hashcat` are often used in the exam. Make sure you’re familiar with **hash identification** using tools like `hashid` and cracking strategies for various hash types.
+
+6. **Metasploit Exploitation**:
+   - Use **Metasploit** for exploiting services like FTP or SMB after scanning with Nmap.
+
+7. **Wireshark Filters**:
+   - Packet analysis is frequently tested. Make sure to know filters such as `http`, `tcp.port==80`, and `ip.addr==192.168.1.1`.
+
+8. **Brute Forcing Using Burp Suite**:
+   - Learn how to capture a request, send it to **Intruder**, and launch a brute-force attack using wordlists.
+
+**Additional Resources**:
+   - For hands-on practice, check out [TryHackMe Rooms](https://tryhackme.com) like:
+     - **Further Nmap**: [Nmap TryHackMe](https://tryhackme.com/room/furthernmap)
+     - **Wireshark**: [Wireshark TryHackMe](https://tryhackme.com/room/wireshark)
+     - **John the Ripper**: [John the Ripper TryHackMe](https://tryhackme.com/room/johntheripper0)
+     - **Metasploit**: [Metasploit TryHackMe](https://tryhackme.com/room/rpmetasploit)
 
 ---
 
