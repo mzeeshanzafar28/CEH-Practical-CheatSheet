@@ -785,6 +785,66 @@ Weevely is a stealthy PHP web shell used for remote command execution and backdo
 
 ---
 
+### **27. Linux Incident Surface**
+
+#### **Incident Response for Linux Systems**
+When dealing with security incidents on Linux systems, the primary focus is on analyzing system logs, network traffic, running processes, services, and file integrity. The goal is to identify any anomalies or suspicious activities.
+
+#### **System Logs**
+- **`/var/log/auth.log`**: Logs authentication attempts, including successful and failed login attempts.
+- **`/var/log/syslog`**: Captures general system activity and messages, including system errors and warnings.
+- **`/var/log/kern.log`**: Logs kernel-level events, such as driver errors and system crashes.
+
+#### **Network Traffic**
+- Analyzing network traffic allows the detection of unusual outbound or inbound connections. Tools like **Wireshark**, **tcpdump**, and **netstat** are commonly used to monitor active connections.
+
+#### **Running Processes**
+- Regularly check running processes with commands like `ps aux` to ensure that no unauthorized or suspicious processes are running on the system.
+
+#### **Running Services**
+- Monitoring active services with commands like `systemctl` and `service` helps identify unauthorized services that could lead to a compromise.
+
+#### **File & Process Integrity**
+- Regular integrity checks can help detect modifications to system files or binaries. Tools like **AIDE** (Advanced Intrusion Detection Environment) and **Tripwire** are commonly used for integrity monitoring.
+
+---
+
+### **28. Linux Attack Surface**
+
+#### **Common Vulnerabilities and Attack Vectors**
+The **attack surface** of a Linux system comprises all potential points where an attacker could try to exploit a vulnerability. Regular audits and monitoring are essential to minimize risk.
+
+#### **Open Ports**
+- **Open ports** can expose services to the internet that may be vulnerable to attacks. Use `nmap` or `netstat -tuln` to list open ports on a system.
+
+#### **Running Services**
+- **Running services** can sometimes contain vulnerabilities, especially if they are outdated or misconfigured. Regularly audit running services using `systemctl` or `service --status-all`.
+
+#### **Software Vulnerabilities**
+- Any **running applications or software** with known vulnerabilities must be updated or patched. Use vulnerability scanning tools like **Nessus**, **OpenVAS**, or **Lynis** to identify potential weak spots.
+
+#### **Network Communication**
+- Monitoring **network communication** for unusual activity is crucial. Tools like **Wireshark** and **tcpdump** can help capture and analyze network traffic, revealing possible attacks or suspicious activity.
+
+---
+
+### **29. lsof -p PID (List Open Files by Process ID)**
+
+The `lsof` (List Open Files) command shows files that are opened by a particular process. It helps track which files or network connections are being used by a specific PID (Process ID).
+
+- **Basic Syntax**:
+  ```bash
+  lsof -p [PID]
+  ```
+
+- **Example**: 
+  ```bash
+  lsof -p 1234
+  ```
+  This command will display all files opened by the process with PID `1234`. It is useful for incident response to determine what resources a process is accessing, such as network connections or file reads/writes.
+
+---
+
 
 ---
 
